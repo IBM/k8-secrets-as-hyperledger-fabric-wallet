@@ -15,6 +15,8 @@ In most of the scenarios, front-end client application and client SDK applicatio
 
 * [IBM Cloud Account](https://cloud.ibm.com)
 * [Git Client](https://git-scm.com/downloads) - needed for clone commands.
+* [JDK 11](http://jdk.java.net/archive/)
+* [Maven]()
 
 ## Steps
 
@@ -34,9 +36,7 @@ Follow these steps to setup and run this code pattern. The steps are described i
 
 **Create IBM Kubernetes Service Instance**
 
-Create a Kubernetes cluster with [Kubernetes Service](https://cloud.ibm.com/containers-kubernetes/catalog/cluster) using IBM Cloud Dashboard.
-
-  ![Kubernetes Service](images/create_kubernetes_service.png)
+Create a Kubernetes cluster with [Kubernetes Service](https://cloud.ibm.com/kubernetes/catalog/create) using IBM Cloud Dashboard.
 
   > Note: It can take up to 15-20 minutes for the cluster to be set up and provisioned.  
 
@@ -44,14 +44,37 @@ Create a Kubernetes cluster with [Kubernetes Service](https://cloud.ibm.com/cont
 
 Create [IBM Blockchain Platform Service](https://cloud.ibm.com/catalog/services/blockchain-platform) instance using IBM Cloud Dashboard.
 
-![Blockchain Platform](images/create_IBP_service.png)
-
 ## 3. Setup Hyperledger Fabric Network using IBM Blockchain Platform
 
 Follow this [tutorial](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/) to create fabric network using IBM Blockchain Platform. You can decide network components (number of organizations, number of peers in each org etc.) as per your requirement. For example, the blockchain network may consist of two organizations with single peer each and an orderer service for carrying out all the transactions.
 
+**Chaincode Install & Instantiation and Download Connection Profile**
+
 This code pattern can be executed with the sample chaincode [fabcar.go](https://github.com/hyperledger/fabric-samples/tree/release-1.4/chaincode/fabcar/go) or else you can install your own chaincode. Instantiate the chaincode after installation.
+
 You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/) to install smart contract, instantiate and then download connection profile. The downloaded connection profile will be used in further steps.
+
+## Register and enroll user to connect to Hyperledger Fabric Network
+
+Go to the cloned repository code.
+Copy the downloaded connection profile(in previous step) at `src/main/resources`
+Update the value of `connection-profile` key by the name of your downloaded connection profile in `src/main/resources/application.yml`.
+Run the following command in your terminal window.
+utility class "application.secret.wallet.util.EnrollAdminAndUser" with below arguments to Register and enrol Blockchain User as below
+```
+   mvn clean install
+   mvn exec:java -Dexec.args="org1msp_profile.json admin adminpw shikha shikhapw
+```
+
+## Deploy the Fabric Java SDK Client application on IBM Kubernetes Service
+
+As discussed before, need to decide on which Kubernetes cluster you would like to deploy the application. The application can be deployed on Kubernetes using devops toolchain.
+
+* Create a [toolchain](https://cloud.ibm.com/devops/create) to `Develop a Kubernetes App`.
+* Follow the instructions to deploy your application explained [here](https://www.ibm.com/cloud/architecture/tutorials/use-develop-kubernetes-app-toolchain?task=1).
+
+> Note: You may need to fork the repository and provide that Github URL to toolchain.
+
 
 
 
