@@ -48,25 +48,36 @@ Create [IBM Blockchain Platform Service](https://cloud.ibm.com/catalog/services/
 
 Follow this [tutorial](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/) to create fabric network using IBM Blockchain Platform. You can decide network components (number of organizations, number of peers in each org etc.) as per your requirement. For example, the blockchain network may consist of two organizations with single peer each and an orderer service for carrying out all the transactions.
 
+Make a note of the `admin` username and password which you have created. It will be used further to register new users.
+
 **Chaincode Install & Instantiation and Download Connection Profile**
 
 This code pattern can be executed with the sample chaincode [fabcar.go](https://github.com/hyperledger/fabric-samples/tree/release-1.4/chaincode/fabcar/go) or else you can install your own chaincode. Instantiate the chaincode after installation.
 
 You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/) to install smart contract, instantiate and then download connection profile. The downloaded connection profile will be used in further steps.
 
-## Register and enroll user to connect to Hyperledger Fabric Network
+## 4. Register and enroll user to connect to Hyperledger Fabric Network
 
-Go to the cloned repository code.
-Copy the downloaded connection profile(in previous step) at `src/main/resources`
-Update the value of `connection-profile` key by the name of your downloaded connection profile in `src/main/resources/application.yml`.
-Run the following command in your terminal window.
-utility class "application.secret.wallet.util.EnrollAdminAndUser" with below arguments to Register and enrol Blockchain User as below
-```
+- Go to the cloned repository code.
+   ```
+   cd k8-secrets-as-hyperledger-fabric-wallet
+   ```
+   
+- Copy the downloaded connection profile(in previous step) at `src/main/resources`.
+
+- Replace `Your_Connection_Profile_Name` by the name of your downloaded connection profile in `src/main/resources/application.yml`.
+
+- Run the following commands in your terminal window. It will run the utility class `application.secret.wallet.util.EnrollAdminAndUser` to register and enroll a new blockchain user.
+
+   ```
    mvn clean install
-   mvn exec:java -Dexec.args="org1msp_profile.json admin adminpw shikha shikhapw
-```
-
-## Deploy the Fabric Java SDK Client application on IBM Kubernetes Service
+   mvn exec:java -Dexec.args="org1msp_profile.json <admin_user_name> <admin_user_password> <new_user_name> <new_user_password>"
+   ```
+   > Note: Username and Password of admin identity should be the ones which was created in Step #3 above.
+   
+   This command will return you the base64 encoded MSP ID, certificate and private Key for the new user. Make a note of those, it will be used in further steps.
+   
+## 5. Deploy the Fabric Java SDK Client application on IBM Kubernetes Service
 
 As discussed before, need to decide on which Kubernetes cluster you would like to deploy the application. The application can be deployed on Kubernetes using devops toolchain.
 
@@ -75,8 +86,19 @@ As discussed before, need to decide on which Kubernetes cluster you would like t
 
 > Note: You may need to fork the repository and provide that Github URL to toolchain.
 
+After deployment the application, URL of the application can be found at the end of `deploy stage` logs. The application can be accessed at:
 
+```
+   <APP_URL>/swagger-ui.html
+```
 
+At this stage, application will not work as expected because user's certificate is not yet provided. Follow the next step for that.
+
+## 6.Deploy Blockchain user credentials as Kubernetes secret
+
+In this step we will make credentials available as secret in the namesoace where the client application is deployed. Then application will use those secrets going further to transact with blockchain network.
+
+- Update `scripts/env_setup.yaml` with the base64 encoded values of new user. Use the values noted in `Step #4`.
 
 
 
