@@ -29,7 +29,7 @@ Follow these steps to setup and run this code pattern. The steps are described i
 
 - Clone the repo using the below command.
    ```
-   git clone 
+   git clone https://github.com/IBM/k8-secrets-as-hyperledger-fabric-wallet.git
    ```
    
 ## 2. Create IBM Cloud Services
