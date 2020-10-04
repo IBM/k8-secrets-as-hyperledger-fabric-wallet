@@ -6,7 +6,11 @@ Security on the Hyperledger Fabric is enforced with digital signatures. All requ
 
 There are existing Fabric wallets like FileSystemWallet, CouchDBWallet which developers can leverage to store Blockchain identities. The security concern with these implementations is that they “externalize” associated privateKey of the identity which can be compromised if someone get access to these storage systems which are outside of Kubernetes platform where Fabric SDK client application is deployed.
 
-In most of the scenarios, front-end client application and client SDK application (integration layer) gets deployed to Kubernetes cluster. Hence we propose the solution to store certificate wallet in Kubernetes platform itself. It can be considered more secure since it removes dependency to store wallet outside of Kubernetes cluster. Also, there is no additional cost associated to use Kubernetes secretes and existing Kubernetes cluster can be used. This code pattern demonstrates how to store certificates as K8s secrets and the use of secrets wallet further using Fabric JAVA SDK.
+In most of the scenarios, front-end client application and client SDK application (integration layer) gets deployed to Kubernetes cluster. Hence we propose the solution to store certificate wallet in Kubernetes platform itself. It can be considered more secure since it removes dependency to store wallet outside of Kubernetes cluster. This code pattern demonstrates the methodology to store user's certificates as Kubernetes secrets and the use of secrets further during transactions.
+
+At the end of this code pattern, the users will understand how-to: 
+* store user's certificates as K8s secrets 
+* use secrets while performing transaction using Fabric JAVA SDK
 
 ## Flow
 
@@ -16,7 +20,7 @@ In most of the scenarios, front-end client application and client SDK applicatio
 * [IBM Cloud Account](https://cloud.ibm.com)
 * [Git Client](https://git-scm.com/downloads) - needed for clone commands.
 * [JDK 11](http://jdk.java.net/archive/)
-* [Maven]()
+* [Maven](https://maven.apache.org/download.cgi)
 
 ## Steps
 
