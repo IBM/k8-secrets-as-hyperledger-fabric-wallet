@@ -94,19 +94,57 @@ After deployment the application, URL of the application can be found at the end
 
 At this stage, application will not work as expected because user's certificate is not yet provided. Follow the next step for that.
 
-## 6.Deploy Blockchain user credentials as Kubernetes secret
+## 6. Deploy Blockchain user credentials as Kubernetes secret
 
 In this step we will make credentials available as secret in the namesoace where the client application is deployed. Then application will use those secrets going further to transact with blockchain network.
 
 - Update `scripts/env_setup.yaml` with the base64 encoded values of new user. Use the values noted in `Step #4`.
 
+- Perform the steps provided under the access tab `IBM Cloud Dashboard -> Clusters -> <your cluster> -> Access` to get access of your cluster(where you have deployed the client application) through kubectl CLI.
 
+- Run the below commands to store the blockchain user's credentials as Kubernetes secrets.
 
+   ```
+   cd scripts
+   kubectl apply -f ./env_setup.yaml
+   ```
 
+- Identify the `deployment name` of the deployed client application by running the below command.
 
+   ```
+   kubectl get deployment --all-namespaces
+   ```
+   
+- Run the below kubectl command to expose Kubernetes secrets as environment variables
+
+   ```
+   kubectl set env --from=secret/wallet deployment/{Kubernetes name of the deployment}
+   ```
+   
+## 7. Access the client application
+
+Access your application at:
+
+```
+   <APP_URL>/swagger-ui.html
+```
+
+Execute the `query` and `invoke` instructions for your chaincode. If you have deployed the sample `fabcar` chaincode, then you can execute transactions as shown in the snapshots below.
+
+> Note: In this code pattern, we have installed fabcar chaincode on network, so we are calling queryAllCars chaincode function. Please do change this as per your chaincode functions.
+
+**Query**
+
+**Invoke**
+
+Now during invoke transaction, the SDK uses the user's certificate from the environment variables which were exposed from secrets and execute the transaction.
 
 
 ## Learn More
+
+* [Quick start guide for IBM Blockchain Platform](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/)
+* [Learn more about wallets of Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/release-1.4/developapps/wallet.html)
+* [Understand about Kubernetes secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
 
 
 ## License
