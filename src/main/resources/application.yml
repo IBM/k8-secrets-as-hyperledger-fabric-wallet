@@ -1,0 +1,11 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+logging:
+  level:
+    application: DEBUG
+    root: DEBUG
+
+blockchain:
+  connection-profile: org1msp_profile.json
+  user: BC_User
