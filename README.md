@@ -26,7 +26,7 @@ At the end of this code pattern, the users will understand how-to:
 ## Pre-requisites
 
 * [IBM Cloud Account](https://cloud.ibm.com)
-* [Git Client](https://git-scm.com/downloads) - needed for clone commands.
+* [Git Client](https://git-scm.com/downloads)
 * [JDK 11](http://jdk.java.net/archive/)
 * [Maven](https://maven.apache.org/download.cgi)
 
@@ -36,6 +36,10 @@ Follow these steps to setup and run this code pattern. The steps are described i
 1. [Get the code](#1-get-the-code)
 2. [Create IBM Cloud Services](#2-create-ibm-cloud-services)
 3. [Setup Hyperledger Fabric Network using IBM Blockchain Platform](#3-setup-hyperledger-fabric-network-using-ibm-blockchain-platform)
+4. [Register and enroll user to connect to Hyperledger Fabric Network](#4-register-and-enroll-user-to-connect-to-hyperledger-fabric-network)
+5. [Deploy the Fabric Java SDK Client application on IBM Kubernetes Service](#5-deploy-the-fabric-java-sdk-client-application-on-ibm-kubernetes-service)
+6. [Deploy Blockchain user wallet as Kubernetes secret](#6-deploy-blockchain-user-wallet-as-kubernetes-secret)
+7. [Access the client application](#7-access-the-client-application)
 
 ## 1. Get the code
 
@@ -110,7 +114,7 @@ At this stage, application will not work as expected because user's wallet is no
 
 In this step we will make wallet available as secret in the namespace in which the client application is deployed. Then application will use those secrets further to transact with blockchain network.
 
-- Update `scripts/env_setup.yaml` with the base64 encoded values of new user. Use the values noted in Step #4.
+- Update `scripts/env_setup.yaml` with the base64 encoded values of new user. Use the values noted in [Step #4](#4-register-and-enroll-user-to-connect-to-hyperledger-fabric-network).
 
 - Perform the steps provided under the access tab `IBM Cloud Dashboard -> Clusters -> <your cluster> -> Access` to get access of your cluster(where you have deployed the client application) through kubectl CLI.
 
@@ -130,7 +134,7 @@ In this step we will make wallet available as secret in the namespace in which t
 - Run the below kubectl command to expose Kubernetes secrets as environment variables.
 
    ```
-   kubectl set env --from=secret/wallet deployment/{Kubernetes name of the deployment}
+   kubectl set env --from=secret/wallet deployment/{Name of the deployment}
    ```
    
 ## 7. Access the client application
@@ -146,7 +150,7 @@ You will get the below page on your browser.
 ![swagger-ui](./images/swagger-ui.png)
 
 
-Execute the `invoke` and `query` transactions for your chaincode. If you have deployed the sample `fabcar` chaincode, then you can execute transactions as shown in the snapshots below.
+Execute the `invoke` and `query` transactions for your chaincode. If you have deployed the sample `fabcar` chaincode, then you can execute the transactions using the values shown below. Else please provide the values as per your chaincode.
 
 **Invoke**
 
@@ -171,8 +175,9 @@ To query, click on `Query API > Try it out`. Try with the following values for f
 
 ![query-transaction](./images/query-transaction.png)
 
+It will show the list of all cars of which data has been inserted to blockchain.
 
-> Note: In this code pattern, we have installed fabcar chaincode on network, so we are calling `queryAllCars` chaincode function. Please do change this as per your chaincode functions.
+> Note: In this code pattern, we have installed `fabcar` chaincode on network, so we are calling `queryAllCars` chaincode function. Please do change this as per your chaincode functions.
 
 ## Learn More
 
