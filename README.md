@@ -1,18 +1,26 @@
 ## *** Work in progress ***
 
-## K8 secrets as Hyperledger Fabric wallet using Fabric Java SDK
+## Kubernetes secrets as Hyperledger Fabric wallet using Fabric Java SDK
 
 Security on the Hyperledger Fabric is enforced with digital signatures. All requests made to the fabric must be signed by users with appropriate enrolment certificates. Once user is enrolled, application persist certificate in wallet for future usages.
 
-There are existing Fabric wallets like FileSystemWallet, CouchDBWallet which developers can leverage to store Blockchain identities. The security concern with these implementations is that they “externalize” associated privateKey of the identity which can be compromised if someone get access to these storage systems which are outside of Kubernetes platform where Fabric SDK client application is deployed.
+There are existing Fabric wallets like FileSystemWallet, CouchDBWallet which developers can leverage to store Blockchain identities. The security concern with these implementations is that they “externalize” associated privateKey of the identity which can be compromised if someone get access to these storage systems. Generally front-end client application and client SDK application (integration layer) gets deployed in the containerized environment i.e. into Kubernetes platform. So how about storing the wallet into Kubernetes platform itself? It would be considered more secure since it removes dependency to store wallet outside of Kubernetes platform.
 
-In most of the scenarios, front-end client application and client SDK application (integration layer) gets deployed to Kubernetes cluster. Hence we propose the solution to store certificate wallet in Kubernetes platform itself. It can be considered more secure since it removes dependency to store wallet outside of Kubernetes cluster. This code pattern demonstrates the methodology to store user's certificates as Kubernetes secrets and the use of secrets further during transactions.
+Hence this code pattern demonstrates the methodology to store wallet into Kubernetes platform as secrets and use of those secrets further during transactions.
 
 At the end of this code pattern, the users will understand how-to: 
-* store user's certificates as K8s secrets 
+* store wallet as Kubernetes secrets 
 * use secrets while performing transaction using Fabric JAVA SDK
 
 ## Flow
+
+![flow-diagram](./images/flow-diagram.png)
+
+1. Set up Hyperledger Fabric network using IBM Blockchain Platform.
+2. Deploy the client application built using Fabric Java SDK to communicate with blockchain network on IBM Kubernetes Cluster.
+3. Users with Admin identity registers new users to the blockchain network and then new users enroll to the network.
+4. The generated certificates will be stored as Kubernetes Secret. 
+5. The certificates from Kubernetes Secrets will be used to do further transactions with blockchain network.
 
 
 ## Pre-requisites
@@ -40,7 +48,7 @@ Follow these steps to setup and run this code pattern. The steps are described i
 
 **Create IBM Kubernetes Service Instance**
 
-Create a Kubernetes cluster with [Kubernetes Service](https://cloud.ibm.com/kubernetes/catalog/create) using IBM Cloud Dashboard.
+Create two Kubernetes cluster with [Kubernetes Service](https://cloud.ibm.com/kubernetes/catalog/create) using IBM Cloud Dashboard. One Kubernetes service is required to setup IBM Blockchain Platform and other one is required to deploy client application. Though you can use one Kubernetes service only but thats not the recommended approach.
 
   > Note: It can take up to 15-20 minutes for the cluster to be set up and provisioned.  
 
@@ -54,11 +62,11 @@ Follow this [tutorial](https://developer.ibm.com/tutorials/quick-start-guide-for
 
 Make a note of the `admin` username and password which you have created. It will be used further to register new users.
 
-**Chaincode Install & Instantiation and Download Connection Profile**
+**Install & Instantiation of Chaincode and Download Connection Profile**
 
-This code pattern can be executed with the sample chaincode [fabcar.go](https://github.com/hyperledger/fabric-samples/tree/release-1.4/chaincode/fabcar/go) or else you can install your own chaincode. Instantiate the chaincode after installation.
+This code pattern can be executed with the sample chaincode [fabcar.go](https://github.com/hyperledger/fabric-samples/tree/release-1.4/chaincode/fabcar/go) or else you can install your own chaincode. Instantiate the chaincode after installation and then download the connection profile.
 
-You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/) to install smart contract, instantiate and then download connection profile. The downloaded connection profile will be used in further steps.
+You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/) to install smart contract, instantiate and to download the connection profile. The downloaded connection profile will be used in further steps.
 
 ## 4. Register and enroll user to connect to Hyperledger Fabric Network
 
@@ -79,11 +87,11 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
    ```
    > Note: Username and Password of admin identity should be the ones which was created in Step #3 above.
    
-   This command will return you the base64 encoded MSP ID, certificate and private Key for the new user. Make a note of those, it will be used in further steps.
+   The output of this command will have the base64 encoded MSP ID, certificate and private Key for the new user. Make a note of those, it will be used in further steps.
    
 ## 5. Deploy the Fabric Java SDK Client application on IBM Kubernetes Service
 
-As discussed before, need to decide on which Kubernetes cluster you would like to deploy the application. The application can be deployed on Kubernetes using devops toolchain.
+As discussed before, need to decide on which Kubernetes cluster you would like to deploy the application and deploy your Java SDK client application using devops toolchain.
 
 * Create a [toolchain](https://cloud.ibm.com/devops/create) to `Develop a Kubernetes App`.
 * Follow the instructions to deploy your application explained [here](https://www.ibm.com/cloud/architecture/tutorials/use-develop-kubernetes-app-toolchain?task=1).
@@ -96,13 +104,13 @@ After deployment the application, URL of the application can be found at the end
    <APP_URL>/swagger-ui.html
 ```
 
-At this stage, application will not work as expected because user's certificate is not yet provided. Follow the next step for that.
+At this stage, application will not work as expected because user's wallet is not yet provided. Follow the next step for that.
 
-## 6. Deploy Blockchain user credentials as Kubernetes secret
+## 6. Deploy Blockchain user wallet as Kubernetes secret
 
-In this step we will make credentials available as secret in the namesoace where the client application is deployed. Then application will use those secrets going further to transact with blockchain network.
+In this step we will make wallet available as secret in the namespace in which the client application is deployed. Then application will use those secrets further to transact with blockchain network.
 
-- Update `scripts/env_setup.yaml` with the base64 encoded values of new user. Use the values noted in `Step #4`.
+- Update `scripts/env_setup.yaml` with the base64 encoded values of new user. Use the values noted in Step #4.
 
 - Perform the steps provided under the access tab `IBM Cloud Dashboard -> Clusters -> <your cluster> -> Access` to get access of your cluster(where you have deployed the client application) through kubectl CLI.
 
@@ -119,7 +127,7 @@ In this step we will make credentials available as secret in the namesoace where
    kubectl get deployment --all-namespaces
    ```
    
-- Run the below kubectl command to expose Kubernetes secrets as environment variables
+- Run the below kubectl command to expose Kubernetes secrets as environment variables.
 
    ```
    kubectl set env --from=secret/wallet deployment/{Kubernetes name of the deployment}
