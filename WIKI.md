@@ -1,15 +1,15 @@
 ## Short Name
 
-Modernize apps using IBM Transformation Advisor tool on IBM Cloud Pak for Applications
+Kubernetes secrets as Hyperledger Fabric wallet using Fabric Java SDK
 
 ## Short Description
 
-Transform your traditional on-premise application, and deploy it as a containerized app on IBM Cloud Pak for Applications running on Managed OpenShift
+
 
 ## Author
 Shikha Maheshwari (https://developer.ibm.com/profiles/shikha.mah/)
 
-Amol Ghanekar ()
+Amol Ghanekar
 
 ## Code
 https://github.com/IBM/k8-secrets-as-hyperledger-fabric-wallet
