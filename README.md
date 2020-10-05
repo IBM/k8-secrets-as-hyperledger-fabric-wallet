@@ -141,16 +141,38 @@ Access your application at:
    <APP_URL>/swagger-ui.html
 ```
 
-Execute the `query` and `invoke` instructions for your chaincode. If you have deployed the sample `fabcar` chaincode, then you can execute transactions as shown in the snapshots below.
+You will get the below page on your browser.
 
-> Note: In this code pattern, we have installed fabcar chaincode on network, so we are calling queryAllCars chaincode function. Please do change this as per your chaincode functions.
+![swagger-ui](./images/swagger-ui.png)
 
-**Query**
+
+Execute the `invoke` and `query` transactions for your chaincode. If you have deployed the sample `fabcar` chaincode, then you can execute transactions as shown in the snapshots below.
 
 **Invoke**
 
-Now during invoke transaction, the SDK uses the user's certificate from the environment variables which were exposed from secrets and execute the transaction.
+Click on `Invoke Transaction > Try it out`. You can provide the following as `invokeRequest` and then `Execute`.
 
+```
+{
+  "chaincodeMethod": "createCar",
+  "chaincodeName": "fabcar",
+  "channelName": "channel1",
+  "data": [
+    "CAR1","HONDA","CIVIC","Blue","Martin"
+  ]
+}
+```
+
+On successful invoke, it will return response code as 200. This time the SDK uses the user's certificate from the environment variables which were exposed from secrets and execute the invoke transaction.
+
+**Query**
+
+To query, click on `Query API > Try it out`. Try with the following values for fabcar chaincode and then `Execute`. 
+
+![query-transaction](./images/query-transaction.png)
+
+
+> Note: In this code pattern, we have installed fabcar chaincode on network, so we are calling `queryAllCars` chaincode function. Please do change this as per your chaincode functions.
 
 ## Learn More
 
