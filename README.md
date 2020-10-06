@@ -87,11 +87,12 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
 
    ```
    mvn clean install
-   mvn exec:java -Dexec.args="org1msp_profile.json <admin_user_name> <admin_user_password> <new_user_name> <new_user_password>"
+   mvn exec:java -Dexec.args="<downloaded_connection_profile_name> <admin_user_name> <admin_user_password> <new_user_name> <new_user_password>"
    ```
+   
    > Note: Username and Password of admin identity should be the ones which was created in Step #3 above.
    
-   The output of this command will have the base64 encoded MSP ID, certificate and private Key for the new user. Make a note of those, it will be used in further steps.
+   The output of this command will have the base64 encoded MSP ID, certificate and private Key for the new blockchain user. Make a note of those, it will be used in further steps.
    
 ## 5. Deploy the Fabric Java SDK Client application on IBM Kubernetes Service
 
