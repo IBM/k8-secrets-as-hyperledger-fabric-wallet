@@ -157,7 +157,7 @@ Execute the `invoke` and `query` transactions for your chaincode. If you have de
 
 **Invoke**
 
-Click on `Invoke Transaction > Try it out`. You can provide the following as `invokeRequest` and then `Execute`.
+Click on `Invoke Transaction > Try it out`. You can provide the following as `invokeRequest`, modify the details as per your network and then `Execute`.
 
 ```
 {
