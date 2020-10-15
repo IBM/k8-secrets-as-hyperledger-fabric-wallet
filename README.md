@@ -83,7 +83,7 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
 
 - Replace `Your_Connection_Profile_Name` by the name of your downloaded connection profile in `src/main/resources/application.yml`.
 
-- Run the following commands in your terminal window. It will run the utility class `application.secret.wallet.util.EnrollAdminAndUser` to register and enroll a new blockchain user.
+- Run the following commands in your terminal window. Make sure JDK11 and Maven path is set properly otherwise you will get errors. This command runs the utility class `application.secret.wallet.util.EnrollAdminAndUser` to register and enroll a new blockchain user using admin identity.
 
    ```
    mvn clean install
@@ -100,10 +100,10 @@ As discussed before, need to decide on which Kubernetes cluster you would like t
 
 * Create a [toolchain](https://cloud.ibm.com/devops/create) to `Develop a Kubernetes App`.
 * Follow the instructions to deploy your application explained [here](https://www.ibm.com/cloud/architecture/tutorials/use-develop-kubernetes-app-toolchain?task=1).
+   * You can choose to `fork` the repository in your Github account.
+   * For ease, you can choose `default` namespace to deploy the application on Kubernetes Cluster.
 
-> Note: You may need to fork the repository and provide that Github URL to toolchain.
-
-After deployment the application, URL of the application can be found at the end of `deploy stage` logs. The application can be accessed at:
+Wait till the application gets deployed. Once done, access the logs of `deploy stage` in delivery pipeline and find the URL of the application at the end of logs. The application can be accessed at:
 
 ```
    <APP_URL>/swagger-ui.html
