@@ -78,7 +78,7 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
    cd k8-secrets-as-hyperledger-fabric-wallet
    ```
    
-- Copy the downloaded connection profile(in previous step) at `src/main/resources`.
+- Copy the downloaded connection profile(in previous step) at `src/main/resources`. The sample connection profile named as `org1msp_profile.json` is available in repository.
 
 - Replace `Your_Connection_Profile_Name` by the name of your downloaded connection profile in `src/main/resources/application.yml`.
 
@@ -86,7 +86,7 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
 
    ```
    mvn clean install
-   mvn exec:java -Dexec.args="<downloaded_connection_profile_name> <admin_user_name> <admin_user_password> <new_user_name> <new_user_password>"
+   mvn exec:java -Dexec.args="<your_connection_profile_name> <admin_user_name> <admin_user_password> <new_user_name> <new_user_password>"
    ```
    
    > Note: Username and Password of admin identity should be the ones which was created in Step #3 above.
