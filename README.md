@@ -1,6 +1,6 @@
 ## *** Work in progress ***
 
-## Kubernetes secrets as Hyperledger Fabric wallet using Fabric Java SDK
+## Use Kubernetes secrets as Hyperledger Fabric wallet using Fabric Java SDK
 
 Security on the Hyperledger Fabric is enforced with digital signatures. All requests made to the fabric must be signed by users with appropriate enrolment certificates. Once user is enrolled, application persist certificate in wallet for future usages.
 
@@ -38,7 +38,7 @@ Follow these steps to setup and run this code pattern. The steps are described i
 3. [Setup Hyperledger Fabric Network using IBM Blockchain Platform](#3-setup-hyperledger-fabric-network-using-ibm-blockchain-platform)
 4. [Register and enroll user to connect to Hyperledger Fabric Network](#4-register-and-enroll-user-to-connect-to-hyperledger-fabric-network)
 5. [Deploy the Fabric Java SDK Client application on IBM Kubernetes Service](#5-deploy-the-fabric-java-sdk-client-application-on-ibm-kubernetes-service)
-6. [Deploy Blockchain user wallet as Kubernetes secret](#6-deploy-blockchain-user-wallet-as-kubernetes-secret)
+6. [Store Fabric wallet as Kubernetes secret](#6-store-fabric-wallet-as-kubernetes-secret)
 7. [Access the client application](#7-access-the-client-application)
 
 ## 1. Get the code
@@ -64,7 +64,7 @@ Create [IBM Blockchain Platform Service](https://cloud.ibm.com/catalog/services/
 
 Follow this [tutorial](https://developer.ibm.com/tutorials/quick-start-guide-for-ibm-blockchain-platform/) to create fabric network using IBM Blockchain Platform. You can decide network components (number of organizations, number of peers in each org etc.) as per your requirement. For example, the blockchain network may consist of two organizations with single peer each and an orderer service for carrying out all the transactions.
 
-Make a note of the `admin` username and password which you have created. It will be used further to register new users.
+Make a note of the Organization CA `admin` username and password which you have created. It will be used further to register new users.
 
 **Install & Instantiation of Chaincode and Download Connection Profile**
 
@@ -111,7 +111,7 @@ Wait till the application gets deployed. Once done, access the logs of `deploy s
 
 At this stage, application will not work as expected because user's wallet is not yet provided. Follow the next step for that.
 
-## 6. Deploy Blockchain user wallet as Kubernetes secret
+## 6. Store Fabric wallet as Kubernetes secret
 
 In this step we will make wallet available as secret in the namespace in which the client application is deployed. Then application will use those secrets further to transact with blockchain network.
 
@@ -170,7 +170,7 @@ Click on `Invoke Transaction > Try it out`. You can provide the following as `in
 }
 ```
 
-On successful invoke, it will return response code as 200. This time the SDK uses the user's certificate from the environment variables which were exposed from secrets and execute the invoke transaction.
+On successful invoke, it will return response code as 200. This time the SDK leverages the wallet from the environment variables which were exposed from Kubernetes secrets to execute the invoke transaction.
 
 **Query**
 
