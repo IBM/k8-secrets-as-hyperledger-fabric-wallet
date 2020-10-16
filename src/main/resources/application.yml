@@ -7,5 +7,5 @@ logging:
     root: DEBUG
 
 blockchain:
-  connection-profile: org1msp_profile.json
+  connection-profile: <Your_Connection_Profile_Name>
   user: BC_User
