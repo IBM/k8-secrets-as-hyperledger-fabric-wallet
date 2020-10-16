@@ -1,4 +1,3 @@
-## *** Work in progress ***
 
 ## Use Kubernetes secrets as Hyperledger Fabric wallet using Fabric Java SDK
 
