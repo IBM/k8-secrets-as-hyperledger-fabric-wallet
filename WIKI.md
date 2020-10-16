@@ -1,9 +1,10 @@
 ## Short Name
 
-Kubernetes secrets as Hyperledger Fabric wallet using Fabric Java SDK
+Use Kubernetes secrets as Hyperledger Fabric wallet using Fabric Java SDK
 
 ## Short Description
 
+Store Hyperledger Fabric wallet into Kubernetes platform as secrets and make it more secure
 
 
 ## Author
