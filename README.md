@@ -78,9 +78,9 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
    cd k8-secrets-as-hyperledger-fabric-wallet
    ```
    
-- Copy the downloaded connection profile(in previous step) at `src/main/resources`. The sample connection profile named as `org1msp_profile.json` is available in repository.
+- Copy the downloaded connection profile file(in previous step) at `src/main/resources`. The sample connection profile named as `org1msp_profile.json` is available in repository.
 
-- Replace `Your_Connection_Profile_Name` by the name of your downloaded connection profile in `src/main/resources/application.yml`.
+- Replace `Your_Connection_Profile_Name` by the filename of your downloaded connection profile in `src/main/resources/application.yml`.
 
 - Run the following commands in your terminal window. Make sure JDK11 and Maven path is set properly otherwise you will get errors. This command runs the utility class `application.secret.wallet.util.EnrollAdminAndUser` to register and enroll a new blockchain user using admin identity.
 
@@ -98,8 +98,10 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
 As discussed before, need to decide on which Kubernetes cluster you would like to deploy the application and deploy your Java SDK client application using devops toolchain.
 
 * Create a [toolchain](https://cloud.ibm.com/devops/create) to `Develop a Kubernetes App`.
-* Follow the instructions to deploy your application explained [here](https://www.ibm.com/cloud/architecture/tutorials/use-develop-kubernetes-app-toolchain?task=1).
+* Follow the instructions to deploy your application explained as [Task 1](https://www.ibm.com/cloud/architecture/tutorials/use-develop-kubernetes-app-toolchain?task=1).
+   * Select a source provider as `Github`.
    * You can choose to `fork` the repository in your Github account.
+   * Provide [this repository](https://github.com/IBM/k8-secrets-as-hyperledger-fabric-wallet/) as `Source Repository URL`.
    * For ease, you can choose `default` namespace to deploy the application on Kubernetes Cluster.
 
 Wait till the application gets deployed. Once done, access the logs of `deploy stage` in delivery pipeline and find the URL of the application at the end of logs. The application can be accessed at:
