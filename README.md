@@ -86,7 +86,7 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
 
    ```
    mvn clean install
-   mvn exec:java -Dexec.args="<your_connection_profile_name> <admin_user_name> <admin_user_password> <new_user_name> <new_user_password>"
+   mvn exec:java -Dexec.args="<your_connection_profile_filename> <admin_user_name> <admin_user_password> <new_user_name> <new_user_password>"
    ```
    
    > Note: Username and Password of admin identity should be the ones which was created in Step #3 above.
