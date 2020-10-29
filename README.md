@@ -121,19 +121,19 @@ If you want to use DockerHub to store images then you should have your DockerHub
    $ docker push $DOCKER_HUB_USER/<image_name>:<tag>
 ```
 
-Update image location in `deploy.yaml`.
+Update image location in `deployment.yaml`.
 
 ```
-   $ sed -i '' s#IMAGE#<image_location># deploy.yaml     ## mac
+   $ sed -i '' s#IMAGE#<image_location># deployment.yaml     ## mac
    OR
-   $ sed -i s#IMAGE#<image_location># deploy.yaml      ## linux
+   $ sed -i s#IMAGE#<image_location># deployment.yaml      ## linux
 ```
 where image_location is either `<deploy-target>` or `$DOCKER_HUB_USER/<image_name>:<tag>`.
 
 Next step is to deploy your application.
 
 ```
-   kubectl create -f deploy.yaml
+   kubectl create -f deployment.yaml
 ```
 
 Wait till the application gets deployed. Once done, get the public ip of your Kubernetes cluster using IBM Cloud Dashboard as `IBM Cloud Dashboard -> Clusters -> <your cluster> -> Worker Nodes (tab)`
