@@ -180,7 +180,7 @@ In this step we will make wallet available as secret in the namespace in which t
 Access your application at:
 
 ```
-   <APP_URL>/swagger-ui.html
+   http://<public_ip_of_cluster>:32424/swagger-ui.html
 ```
 
 You will get the below page on your browser.
