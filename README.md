@@ -161,19 +161,11 @@ In this step we will make wallet available as secret in the namespace in which t
    kubectl apply -f ./env_setup.yaml
    ```
 
-- A secret can be used with a Pod in three ways - as files in a volume mounted, as container environment variable or by the kubelet when pulling images for the Pod. In this code pattern, we are using secret as container environment variable. To achieve this, run the below commands.
-   
-   - Identify the `deployment name` of the deployed client application in previous step.
+- A secret can be used with a Pod in three ways - as files in a volume mounted, as container environment variable or by the kubelet when pulling images for the Pod. In this code pattern, we are using secret as container environment variable. Run the following command to expose Kubernetes secrets as container environment variables.
 
-      ```
-      kubectl get deployment --all-namespaces
-      ```
-   
-   - Run the following command to expose Kubernetes secrets as container environment variables.
-
-      ```
-      kubectl set env --from=secret/wallet deployment/{Name of the deployment}
-      ```
+```
+   kubectl set env --from=secret/wallet deployment/fabric-java-sdk-client-app
+```
    
 ## 7. Access the client application
 
