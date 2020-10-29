@@ -136,7 +136,7 @@ public class EnrollAdminAndUser {
 
             public String getAffiliation() {
 
-                return "org1.department1";
+                return "";
 
             }
 
@@ -191,7 +191,7 @@ public class EnrollAdminAndUser {
 
         RegistrationRequest registrationRequest = new RegistrationRequest(userName);
 
-        registrationRequest.setAffiliation("org1.department1");
+        //registrationRequest.setAffiliation("org1.department1");
 
         registrationRequest.setEnrollmentID(userName);
 
