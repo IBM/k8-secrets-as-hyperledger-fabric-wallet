@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fabric-java-sdk-client-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fabric-java-sdk-client-app
+  template:
+    metadata:
+      labels:
+        app: fabric-java-sdk-client-app
+    spec:
+      containers:
+      - name: fabric-java-sdk-client-app
+        image: IMAGE  
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fabric-java-sdk-client-app-service
+  labels:
+    app: fabric-java-sdk-client-app-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 32424
+  selector:
+    app: fabric-java-sdk-client-app
