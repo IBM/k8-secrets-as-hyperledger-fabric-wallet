@@ -78,7 +78,7 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
    cd k8-secrets-as-hyperledger-fabric-wallet
    ```
    
-- Copy the downloaded connection profile file(in previous step) at `src/main/resources`. The sample connection profile named as `org1msp_profile.json` is available in repository.
+- Copy the downloaded connection profile file(in previous step) at `src/main/resources`. The sample connection profile named as `sample_org1msp_profile.json` is available in repository.
 
 - Replace `Your_Connection_Profile_Name` by the filename of your downloaded connection profile in `src/main/resources/application.yml`.
 
@@ -95,20 +95,60 @@ You can refer to step 12 to step 15 [here](https://developer.ibm.com/tutorials/q
    
 ## 5. Deploy the Fabric Java SDK Client application on IBM Kubernetes Service
 
-As discussed before, need to decide on which Kubernetes cluster you would like to deploy the application and deploy your Java SDK client application using devops toolchain.
+As discussed before, need to decide on which Kubernetes cluster you would like to deploy the application and deploy your Java SDK client application.
 
+<!--
 * Create a [toolchain](https://cloud.ibm.com/devops/create) to `Develop a Kubernetes App`.
 * Follow the instructions to deploy your application explained as [Task 1](https://www.ibm.com/cloud/architecture/tutorials/use-develop-kubernetes-app-toolchain?task=1).
    * Select a source provider as `Github`.
    * You can choose to `fork` the repository in your Github account.
    * Provide [this repository](https://github.com/IBM/k8-secrets-as-hyperledger-fabric-wallet/) as `Source Repository URL`.
    * For ease, you can choose `default` namespace to deploy the application on Kubernetes Cluster.
+-->
 
-Wait till the application gets deployed. Once done, access the logs of `deploy stage` in delivery pipeline and find the URL of the application at the end of logs. The application can be accessed at:
+- Navigate to the root directory `k8-secrets-as-hyperledger-fabric-wallet` of the cloned repository code.
 
-```
-   <APP_URL>/swagger-ui.html
-```
+- Build and push your container image
+
+   If you are using **IBM Cloud container registry** to store your container image, then build and push your image using the following command:
+
+   ```
+      $ ibmcloud cr build -t <deploy-target> .
+   ```
+   where deploy-target is `<region>.icr.io/<my_namespace>/<image_name>:<tag>` as explained [here](https://cloud.ibm.com/docs/Registry).
+
+   If you want to use **Docker Hub** to store images then you should have your Docker Hub account. Create new [Docker Hub account](https://hub.docker.com/) if you do not have already and then execute the following steps:
+
+   ```
+      $ export DOCKER_HUB_USER=<your-dockerhub-username>
+      $ docker build -t $DOCKER_HUB_USER/<image_name>:<tag> .
+      $ docker push $DOCKER_HUB_USER/<image_name>:<tag>
+   ```
+
+- Update image location in `deployment.yaml`.
+
+   ```
+      $ sed -i '' s#IMAGE#<image_location># deployment.yaml     ## mac
+      OR
+      $ sed -i s#IMAGE#<image_location># deployment.yaml      ## linux
+   ```
+   where image_location is either `<deploy-target>` or `$DOCKER_HUB_USER/<image_name>:<tag>`.
+
+- Deploy your application.
+
+   ```
+      kubectl create -f deployment.yaml
+   ```
+
+   Wait till the application gets deployed. 
+   
+- Get the public ip of your Kubernetes cluster using IBM Cloud Dashboard as `IBM Cloud Dashboard -> Clusters -> <your cluster> -> Worker Nodes (tab)`
+
+- Access your application using:
+
+   ```
+      http://<public_ip_of_cluster>:32424/swagger-ui.html
+   ```
 
 At this stage, application will not work as expected because user's wallet is not yet provided. Follow the next step for that.
 
@@ -127,26 +167,18 @@ In this step we will make wallet available as secret in the namespace in which t
    kubectl apply -f ./env_setup.yaml
    ```
 
-- A secret can be used with a Pod in three ways - as files in a volume mounted, as container environment variable or by the kubelet when pulling images for the Pod. In this code pattern, we are using secret as container environment variable. To achieve this, run the below commands.
-   
-   - Identify the `deployment name` of the deployed client application in previous step.
+- A secret can be used with a Pod in three ways - as files in a volume mounted, as container environment variable or by the kubelet when pulling images for the Pod. In this code pattern, we are using secret as container environment variable. Run the following command to expose Kubernetes secrets as container environment variables.
 
-      ```
-      kubectl get deployment --all-namespaces
-      ```
-   
-   - Run the following command to expose Kubernetes secrets as container environment variables.
-
-      ```
-      kubectl set env --from=secret/wallet deployment/{Name of the deployment}
-      ```
+```
+   kubectl set env --from=secret/wallet deployment/fabric-java-sdk-client-app
+```
    
 ## 7. Access the client application
 
 Access your application at:
 
 ```
-   <APP_URL>/swagger-ui.html
+   http://<public_ip_of_cluster>:32424/swagger-ui.html
 ```
 
 You will get the below page on your browser.
