@@ -117,7 +117,7 @@ As discussed before, need to decide on which Kubernetes cluster you would like t
    ```
    where deploy-target is `<region>.icr.io/<my_namespace>/<image_name>:<tag>` as explained [here](https://cloud.ibm.com/docs/Registry).
 
-   If you want to use **DockerHub** to store images then you should have your DockerHub account. Create new [DockerHub account](https://hub.docker.com/) if you do not have already and then execute the following steps:
+   If you want to use **Docker Hub** to store images then you should have your Docker Hub account. Create new [Docker Hub account](https://hub.docker.com/) if you do not have already and then execute the following steps:
 
    ```
       $ export DOCKER_HUB_USER=<your-dockerhub-username>
