@@ -1,9 +1,5 @@
 package application.secret.wallet.controller;
 
-/**
- * Created by Pranav on Tue Dec 10 10:54:13 ICT 2019
- */
-
 import application.secret.wallet.model.InvokeRequest;
 import application.secret.wallet.service.FabricService;
 import io.swagger.annotations.*;
