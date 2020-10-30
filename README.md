@@ -106,43 +106,49 @@ As discussed before, need to decide on which Kubernetes cluster you would like t
    * For ease, you can choose `default` namespace to deploy the application on Kubernetes Cluster.
 -->
 
-If you are using IBM Cloud container registry to store your container image, then build and push your image using the following command:
+- Navigate to the root directory `k8-secrets-as-hyperledger-fabric-wallet` of the cloned repository code.
 
-```
-   $ ibmcloud cr build -t <deploy-target> .
-```
-where deploy-target is `<region>.icr.io/<my_namespace>/<image_name>:<tag>` as explained [here](https://cloud.ibm.com/docs/Registry).
+- Build and push your container image
 
-If you want to use DockerHub to store images then you should have your DockerHub account. Create new [DockerHub account](https://hub.docker.com/) if you do not have already and then execute the following steps:
+   If you are using **IBM Cloud container registry** to store your container image, then build and push your image using the following command:
 
-```
-   $ export DOCKER_HUB_USER=<your-dockerhub-username>
-   $ docker build -t $DOCKER_HUB_USER/<image_name>:<tag> .
-   $ docker push $DOCKER_HUB_USER/<image_name>:<tag>
-```
+   ```
+      $ ibmcloud cr build -t <deploy-target> .
+   ```
+   where deploy-target is `<region>.icr.io/<my_namespace>/<image_name>:<tag>` as explained [here](https://cloud.ibm.com/docs/Registry).
 
-Update image location in `deployment.yaml`.
+   If you want to use **DockerHub** to store images then you should have your DockerHub account. Create new [DockerHub account](https://hub.docker.com/) if you do not have already and then execute the following steps:
 
-```
-   $ sed -i '' s#IMAGE#<image_location># deployment.yaml     ## mac
-   OR
-   $ sed -i s#IMAGE#<image_location># deployment.yaml      ## linux
-```
-where image_location is either `<deploy-target>` or `$DOCKER_HUB_USER/<image_name>:<tag>`.
+   ```
+      $ export DOCKER_HUB_USER=<your-dockerhub-username>
+      $ docker build -t $DOCKER_HUB_USER/<image_name>:<tag> .
+      $ docker push $DOCKER_HUB_USER/<image_name>:<tag>
+   ```
 
-Next step is to deploy your application.
+- Update image location in `deployment.yaml`.
 
-```
-   kubectl create -f deployment.yaml
-```
+   ```
+      $ sed -i '' s#IMAGE#<image_location># deployment.yaml     ## mac
+      OR
+      $ sed -i s#IMAGE#<image_location># deployment.yaml      ## linux
+   ```
+   where image_location is either `<deploy-target>` or `$DOCKER_HUB_USER/<image_name>:<tag>`.
 
-Wait till the application gets deployed. Once done, get the public ip of your Kubernetes cluster using IBM Cloud Dashboard as `IBM Cloud Dashboard -> Clusters -> <your cluster> -> Worker Nodes (tab)`
+- Deploy your application.
 
-The application can be accessed now using:
+   ```
+      kubectl create -f deployment.yaml
+   ```
 
-```
-   http://<public_ip_of_cluster>:32424/swagger-ui.html
-```
+   Wait till the application gets deployed. 
+   
+- Get the public ip of your Kubernetes cluster using IBM Cloud Dashboard as `IBM Cloud Dashboard -> Clusters -> <your cluster> -> Worker Nodes (tab)`
+
+- Access your application using:
+
+   ```
+      http://<public_ip_of_cluster>:32424/swagger-ui.html
+   ```
 
 At this stage, application will not work as expected because user's wallet is not yet provided. Follow the next step for that.
 
