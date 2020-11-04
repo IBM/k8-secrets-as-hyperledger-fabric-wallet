@@ -12,6 +12,8 @@ Shikha Maheshwari (https://developer.ibm.com/profiles/shikha.mah/)
 
 Amol Ghanekar
 
+Bhushan Chinchalkar
+
 ## Code
 https://github.com/IBM/k8-secrets-as-hyperledger-fabric-wallet
 
